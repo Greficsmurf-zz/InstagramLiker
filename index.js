@@ -5,7 +5,7 @@ var config = require('./config.json');
 var driver = new webdriver.Builder().forBrowser('firefox').build();
 
 
-'use strict'
+//'use strict'
 //login into account
  var login = async function(){
  	var element;
@@ -31,36 +31,38 @@ var like = async function(){
    var classname = '_mck9w _gvoze _f2mse';
    var heartClass = '_8scx2 coreSpriteHeartOpen', unheartClass = '_8scx2 coreSpriteHeartFull';
    var i = 0, text;
-   var element, test;
+   var element = ['a'], test;
    await driver.sleep(1000);
    await driver.navigate().to('https://www.instagram.com/' + config.Settings.target + '/');
-
-   element = await driver.findElements(webdriver.By.tagName('a'));
-  
+ 
+   await driver.wait(webdriver.until.elementsLocated(webdriver.By.className(classname)));
    while(i != element.length){
-   	await driver.executeScript('window.open("new")');
-   	test = await driver.getAllWindowHandles();
-   	await driver.wait(webdriver.until.elementsLocated(webdriver.By.className(classname)));
-    //await driver.actions().keyDown(webdriver.Key.SPACE);
+   element = await driver.findElements(webdriver.By.tagName('a'));  
    text = await element[i++].getAttribute('href');
+    
+    	await driver.actions().keyDown(webdriver.Key.SPACE).keyUp(webdriver.Key.SPACE).perform();
+     
    if(text.indexOf('taken-by=') != -1){
-   	 
-     await driver.switchTo().window(test[1]);
+   	//Strange momnent need to fix  {
 
+     await driver.executeScript('window.open("new")');
+     test = await driver.getAllWindowHandles();
+     await driver.switchTo().window(test[1]);
      await driver.navigate().to(text);
+
      await driver.wait(webdriver.until.elementsLocated(webdriver.By.className('_rewi8')));
+   //  await driver.navigate().to(text);
+    
      driver.findElements(webdriver.By.className(heartClass))
      .then(found => found[0].click());
        
      await driver.wait(webdriver.until.elementsLocated(webdriver.By.className(unheartClass)));
-
-     driver.close().then(() => console.log(''));
-     driver.switchTo().window(test[0]);
+    
+    await driver.switchTo().window(test[0]);
      
 
    }
    }
-  
    console.log('END');
    };
 
