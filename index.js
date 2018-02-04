@@ -8,33 +8,14 @@ var driver = new webdriver.Builder().forBrowser('firefox').build();
 //'use strict'
 //login into account
  var login = async function(){
- 	var arr = [];
  	var element;
  	var prom = new Promise(function(resolve, reject){
  	//	if(config.Settings.all != 'true') resolve(() => console.log('resolvedByOne\n')); 
 
          resolve(() => {
-         	driver.wait(webdriver.until.elementsLocated(webdriver.By.className('_si7dy')))
-         	.then(() => {
-         driver.navigate().to('https://www.instagram.com/timur_green/')
-         .then(() => {
-         	driver.wait(webdriver.until.elementsLocated(webdriver.By.className('_t98z6')))
-         	.then(() => driver.findElements(webdriver.By.className('_t98z6')))
-         	.then(found => found[2].click()); 
+         	console.log('Logged in...');
          });
-     });
-        driver.wait(webdriver.until.elementsLocated(webdriver.By.className('_2g7d5 notranslate _o5iw8')))
-        .then(() => { 
-        	driver.findElements(webdriver.By.className('_2g7d5 notranslate _o5iw8'))
-        	.then(found => {
-                  for(var i = 0, j = 0; i < found.length; i++){
-                  	found[i].getAttribute('title')
-                  	.then(found => arr.push(found));
-                  }          
-        	});
-           });  	
-         });
-       return arr;
+      
  	});
  	var classname = '_3jvtb';
     await driver.get('https://www.instagram.com/accounts/login/')
@@ -49,8 +30,8 @@ var driver = new webdriver.Builder().forBrowser('firefox').build();
 };
 
 
-var like = async function(arr){
-	console.log(arr[0]);
+var like = async function(){
+	
    var classname = '_mck9w _gvoze _f2mse';
    var heartClass = '_8scx2 coreSpriteHeartOpen', unheartClass = '_8scx2 coreSpriteHeartFull';
    var i = 0, text;
@@ -86,16 +67,15 @@ var like = async function(arr){
 
    }
    }
-   await driver.quit();
+   
    console.log('END');
    };
 
-
-
 try{
-
  login().then(found => {
-     like(found());
+     found()
+     like();
+     
   });
  }catch(err){
  	console.log('ERROR ', err.message);
